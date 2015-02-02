@@ -10,7 +10,7 @@ namespace Swart.DomainDrivenDesign.Repositories
         where TEntity : class, IEntity<TKey>        
         where TKey : IComparable
     {
-        IQueryable<TEntity> Filter(Expression<Func<TEntity, bool>> filter);
-        IQueryable<TEntity> Filter(ISpecification<TEntity> specification);
+        IQueryable<TEntity> List(Expression<Func<TEntity, bool>> expression);
+        IQueryable<TEntity> List(ISpecification<TEntity> specification);
     }
 }

@@ -10,7 +10,7 @@ namespace Swart.DomainDrivenDesign.Repositories
     {
         IUnitOfWork UnitOfWork { get; }
 
-        IQueryable<TEntity> GetAll();
+        IQueryable<TEntity> List();
 
         TEntity Get(TKey id);
     }
