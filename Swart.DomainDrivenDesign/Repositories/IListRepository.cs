@@ -17,5 +17,7 @@ namespace Swart.DomainDrivenDesign.Repositories
         void Delete(IEnumerable<TEntity> item);
 
         TEntity Delete(TKey id);
+
+        void Update(TEntity item);
     }
 }
