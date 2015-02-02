@@ -12,5 +12,8 @@ namespace Swart.DomainDrivenDesign.Repositories
     {
         IQueryable<TEntity> List(Expression<Func<TEntity, bool>> expression);
         IQueryable<TEntity> List(ISpecification<TEntity> specification);
+
+        TEntity Single(Expression<Func<TEntity, bool>> expression);
+        TEntity Single(ISpecification<TEntity> specification);
     }
 }
