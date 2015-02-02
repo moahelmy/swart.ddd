@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Swart.DomainDrivenDesign.Domain;
 
 namespace Swart.DomainDrivenDesign.Repositories
@@ -9,8 +10,12 @@ namespace Swart.DomainDrivenDesign.Repositories
     {
         void Add(TEntity item);
 
-        void Remove(TEntity item);
+        void Add(IEnumerable<TEntity> item);
 
-        TEntity Remove(TKey id);
+        void Delete(TEntity item);
+
+        void Delete(IEnumerable<TEntity> item);
+
+        TEntity Delete(TKey id);
     }
 }
