@@ -6,8 +6,6 @@ namespace Swart.DomainDrivenDesign.Repositories
     {
         ITransaction BeginTransaction();
 
-        void Commit();        
-
-        void RollbackChanges();
+        void SaveChanges(); 
     }
 }
