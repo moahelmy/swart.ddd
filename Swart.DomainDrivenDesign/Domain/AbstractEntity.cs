@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Swart.DomainDrivenDesign.Domain
 {    
-    public abstract class AbstractEntity: IValidatableObject
+    public abstract class AbstractEntity: IValidatable
     {        
         public abstract IComparable GetId();
 
@@ -37,7 +36,7 @@ namespace Swart.DomainDrivenDesign.Domain
             return base.GetHashCode();
         }
 
-        public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public virtual IEnumerable<ValidationResult> Validate()
         {
             return new List<ValidationResult>();
         }

@@ -31,7 +31,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,9 +43,11 @@
     <Compile Include="Domain\Entity.cs" />
     <Compile Include="Domain\Exceptions\DomainException.cs" />
     <Compile Include="Domain\IEntity.cs" />
+    <Compile Include="Domain\IValidatable.cs" />
     <Compile Include="Domain\Specification\DirectSpecification.cs" />
     <Compile Include="Domain\Specification\ISpecification.cs" />
     <Compile Include="Domain\Specification\Specification.cs" />
+    <Compile Include="Domain\ValidationResult.cs" />
     <Compile Include="Domain\ValueObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Exceptions\DuplicatedRecordException.cs" />

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
@@ -11,7 +10,7 @@ namespace Swart.DomainDrivenDesign.Domain
     /// but it group information about address like street, city, country in one object.
     /// All value object must inherit from this class.
     /// </summary>    
-    public abstract class ValueObject<TValueObject> : IEquatable<TValueObject>, IValidatableObject
+    public abstract class ValueObject<TValueObject> : IEquatable<TValueObject>, IValidatable
         where TValueObject : ValueObject<TValueObject>
     {
         // IEquatable and Override Equals operators
@@ -68,7 +67,7 @@ namespace Swart.DomainDrivenDesign.Domain
             int index = 1;
 
             //compare all public properties
-            PropertyInfo[] publicProperties = this.GetType().GetProperties();
+            PropertyInfo[] publicProperties = GetType().GetProperties();
 
 
             if (publicProperties.Any())
@@ -93,7 +92,7 @@ namespace Swart.DomainDrivenDesign.Domain
             return hashCode;
         }
 
-        public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public virtual IEnumerable<ValidationResult> Validate()
         {
             return new List<ValidationResult>();
         }

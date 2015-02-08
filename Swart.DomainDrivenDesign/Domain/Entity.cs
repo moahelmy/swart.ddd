@@ -16,7 +16,7 @@ namespace Swart.DomainDrivenDesign.Domain
             {
                 if (ReferenceEquals(value, null))
                 {
-                    throw new ArgumentNullException(paramName: "Id", message: "The id property cannot be set to null.");
+                    throw new ArgumentNullException("Id", "The id property cannot be set to null.");
                 }
                 _id = value;
             }
