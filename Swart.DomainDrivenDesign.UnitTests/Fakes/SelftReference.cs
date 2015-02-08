@@ -1,6 +1,6 @@
 ﻿using Swart.DomainDrivenDesign.Domain;
 
-namespace Swart.DomainDrivenDesign.UnitTests.Domain.Classes
+namespace Swart.DomainDrivenDesign.UnitTests.Fakes
 {    
     class SelfReference
         :ValueObject<SelfReference>

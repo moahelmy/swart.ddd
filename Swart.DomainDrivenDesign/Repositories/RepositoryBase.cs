@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Swart.DomainDrivenDesign.Domain;
+using Swart.DomainDrivenDesign.Domain.Extensions;
 using Swart.DomainDrivenDesign.Domain.Specification;
 using Swart.DomainDrivenDesign.Repositories.Exceptions;
 
@@ -17,7 +18,10 @@ namespace Swart.DomainDrivenDesign.Repositories
 
         public abstract IQueryable<TEntity> List();
 
-        public abstract TEntity Get(TKey id);
+        public TEntity Get(TKey id)
+        {
+            return List().IncludeAll().FirstOrDefault(e => e.Id.Equals(id));
+        }
         #endregion        
 
         #region Queryable
@@ -45,34 +49,60 @@ namespace Swart.DomainDrivenDesign.Repositories
 
         #region List
                 
-        public abstract void Add(TEntity item);
+        protected abstract void AddEntity(TEntity entity);
 
-        public virtual void Add(IEnumerable<TEntity> item)
+        public void Add(TEntity entity)
+        {
+            ValidateObject(entity);
+            AddEntity(entity);
+        }        
+
+        public virtual void Add(IEnumerable<TEntity> entity)
         {
             throw new NotImplementedException();
         }
 
-        public abstract void Delete(TEntity item);
+        protected abstract void DeleteEntity(TEntity entity);
 
-        public virtual void Delete(IEnumerable<TEntity> item)
+        public void Delete(TEntity entity)
+        {
+            DeleteEntity(entity);
+        }
+        
+        public virtual void Delete(IEnumerable<TEntity> entity)
         {
             throw new NotImplementedException();
         }
-
+        
         public virtual TEntity Delete(TKey id)
         {
-            var item = Get(id);
-            if (item == null)
+            var entity = Get(id);
+            if (entity == null)
                 throw new RecordNotFoundException();
-            Delete(item);
-            return item;
+            Delete(entity);
+            return entity;
         }
 
-        public abstract void Update(TEntity item);
+        protected abstract void UpdateEntity(TEntity entity);
+
+        public void Update(TEntity entity)
+        {
+            ValidateObject(entity);
+            UpdateEntity(entity);
+        }
         #endregion
 
         #region IDisposal
         public abstract void Dispose();
         #endregion       
+
+        #region Private Methods
+        private static void ValidateObject(TEntity entity)
+        {
+            var validationResults = entity.Validate().ToList();
+            if (validationResults.Any())
+                throw new ValidationException(validationResults);
+        }
+        #endregion
     }
 }

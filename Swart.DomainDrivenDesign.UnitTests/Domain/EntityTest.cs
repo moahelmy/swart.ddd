@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using Swart.DomainDrivenDesign.UnitTests.Domain.Classes;
+using Swart.DomainDrivenDesign.UnitTests.Fakes;
 
 namespace Swart.DomainDrivenDesign.UnitTests.Domain
 {    

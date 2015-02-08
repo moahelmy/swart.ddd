@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
 using Swart.DomainDrivenDesign.Domain;
 
-namespace Swart.DomainDrivenDesign.UnitTests.Domain.Classes
+namespace Swart.DomainDrivenDesign.UnitTests.Fakes
 {     
     /// <summary>
     /// Sample value object
@@ -24,7 +23,7 @@ namespace Swart.DomainDrivenDesign.UnitTests.Domain.Classes
             ZipCode = zipCode;
         }
 
-        public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public override IEnumerable<ValidationResult> Validate()
         {
             return new Collection<ValidationResult>();
         }

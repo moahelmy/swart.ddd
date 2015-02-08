@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\EF\Swart.Repositories.EF\bin\Release\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,6 +45,7 @@
     <Compile Include="Domain\AbstractEntity.cs" />
     <Compile Include="Domain\Entity.cs" />
     <Compile Include="Domain\Exceptions\DomainException.cs" />
+    <Compile Include="Domain\Extensions\EntityExtesnions.cs" />
     <Compile Include="Domain\IEntity.cs" />
     <Compile Include="Domain\IValidatable.cs" />
     <Compile Include="Domain\Specification\DirectSpecification.cs" />
@@ -52,6 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Exceptions\DuplicatedRecordException.cs" />
     <Compile Include="Repositories\Exceptions\RecordNotFoundException.cs" />
+    <Compile Include="Repositories\Exceptions\ValidationException.cs" />
     <Compile Include="Repositories\IBasicRepository.cs" />
     <Compile Include="Repositories\IListRepository.cs" />
     <Compile Include="Repositories\IQueryableRepository.cs" />
@@ -60,6 +65,12 @@
     <Compile Include="Repositories\ITransaction.cs" />
     <Compile Include="Repositories\IUnitOfWork.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Linq\Swart.Linq\Swart.Linq.csproj">
+      <Project>{577E5294-E73F-45DE-AECE-1F96DA83B59D}</Project>
+      <Name>Swart.Linq</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
