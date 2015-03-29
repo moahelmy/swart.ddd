@@ -45,7 +45,8 @@
     <Compile Include="Domain\AbstractEntity.cs" />
     <Compile Include="Domain\Entity.cs" />
     <Compile Include="Domain\Exceptions\DomainException.cs" />
-    <Compile Include="Domain\Extensions\EntityExtesnions.cs" />
+    <Compile Include="Query\Query.cs" />
+    <Compile Include="Query\IQuery.cs" />
     <Compile Include="Domain\IEntity.cs" />
     <Compile Include="Domain\IValidatable.cs" />
     <Compile Include="Domain\Specification\DirectSpecification.cs" />

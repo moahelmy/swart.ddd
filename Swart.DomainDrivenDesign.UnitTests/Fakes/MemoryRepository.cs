@@ -20,7 +20,7 @@ namespace Swart.DomainDrivenDesign.UnitTests.Fakes
         {            
         }
 
-        public override IQueryable<IEntity<Guid>> List()
+        protected override IQueryable<IEntity<Guid>> _List()
         {
             return _list.AsQueryable();
         }

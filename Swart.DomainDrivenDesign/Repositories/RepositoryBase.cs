@@ -3,44 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Swart.DomainDrivenDesign.Domain;
-using Swart.DomainDrivenDesign.Domain.Extensions;
 using Swart.DomainDrivenDesign.Domain.Specification;
+using Swart.DomainDrivenDesign.Query;
 using Swart.DomainDrivenDesign.Repositories.Exceptions;
 
 namespace Swart.DomainDrivenDesign.Repositories
 {
     public abstract class RepositoryBase<TEntity, TKey> : IRepository<TEntity, TKey>
         where TEntity : class, IEntity<TKey>
-        where TKey : IComparable
+        where TKey : IComparable, IEquatable<TKey>
     {
+        protected abstract IQueryable<TEntity> _List();
+
         #region Basic
-        public virtual IUnitOfWork UnitOfWork { get; protected set; }
+        public virtual IUnitOfWork UnitOfWork { get; protected set; }       
 
-        public abstract IQueryable<TEntity> List();
-
-        public TEntity Get(TKey id)
+        public virtual IQuery<TEntity> List()
         {
-            return List().IncludeAll().FirstOrDefault(e => e.Id.Equals(id));
+            return new Query<TEntity>(_List());
+        }
+
+        public virtual TEntity Get(TKey id)
+        {
+            return _List().FirstOrDefault(e => e.Id.Equals(id));
         }
         #endregion        
 
         #region Queryable
-        public virtual IQueryable<TEntity> List(Expression<Func<TEntity, bool>> expression)
+        public virtual IQuery<TEntity> List(Expression<Func<TEntity, bool>> expression)
         {
-            return List().Where(expression);
+            return new Query<TEntity>(_List().Where(expression));
         }
 
-        public virtual IQueryable<TEntity> List(ISpecification<TEntity> specification)
+        public virtual IQuery<TEntity> List(ISpecification<TEntity> specification)
         {
             return List(specification.SatisfiedBy());
         }
 
-        public TEntity Single(Expression<Func<TEntity, bool>> expression)
+        public virtual TEntity Single(Expression<Func<TEntity, bool>> expression)
         {
-            return List().FirstOrDefault(expression);
+            return _List().FirstOrDefault(expression);
         }
 
-        public TEntity Single(ISpecification<TEntity> specification)
+        public virtual TEntity Single(ISpecification<TEntity> specification)
         {
             return Single(specification.SatisfiedBy());
         }
@@ -51,27 +56,43 @@ namespace Swart.DomainDrivenDesign.Repositories
                 
         protected abstract void AddEntity(TEntity entity);
 
-        public void Add(TEntity entity)
+        public virtual void Add(TEntity entity)
         {
             ValidateObject(entity);
             AddEntity(entity);
         }        
 
-        public virtual void Add(IEnumerable<TEntity> entity)
+        public virtual void Add(IEnumerable<TEntity> entities)
         {
-            throw new NotImplementedException();
+            var entitiesLst = entities as IList<TEntity> ?? entities.ToList();
+            foreach (var entity in entitiesLst)
+            {
+                ValidateObject(entity);
+            }
+            foreach (var entity in entitiesLst)
+            {
+                Add(entity);
+            }
         }
 
         protected abstract void DeleteEntity(TEntity entity);
 
-        public void Delete(TEntity entity)
+        public virtual void Delete(TEntity entity)
         {
             DeleteEntity(entity);
         }
         
-        public virtual void Delete(IEnumerable<TEntity> entity)
+        public virtual void Delete(IEnumerable<TEntity> entities)
         {
-            throw new NotImplementedException();
+            var entitiesLst = entities as IList<TEntity> ?? entities.ToList();
+            foreach (var entity in entitiesLst)
+            {
+                ValidateObject(entity);
+            }
+            foreach (var entity in entitiesLst)
+            {
+                Delete(entity);
+            }
         }
         
         public virtual TEntity Delete(TKey id)
@@ -85,7 +106,7 @@ namespace Swart.DomainDrivenDesign.Repositories
 
         protected abstract void UpdateEntity(TEntity entity);
 
-        public void Update(TEntity entity)
+        public virtual void Update(TEntity entity)
         {
             ValidateObject(entity);
             UpdateEntity(entity);

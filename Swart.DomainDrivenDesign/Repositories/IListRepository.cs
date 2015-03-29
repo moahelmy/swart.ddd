@@ -6,7 +6,7 @@ namespace Swart.DomainDrivenDesign.Repositories
 {
     public interface IListRepository<TEntity, in TKey> : IBasicRepository<TEntity, TKey>
         where TEntity : IEntity<TKey>
-        where TKey : IComparable
+        where TKey : IComparable, IEquatable<TKey>
     {
         void Add(TEntity item);
 
