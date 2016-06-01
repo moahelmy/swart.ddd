@@ -1,6 +1,6 @@
 ﻿using System;
 using Swart.DomainDrivenDesign.Domain;
-using Swart.DomainDrivenDesign.Query;
+using System.Linq;
 
 namespace Swart.DomainDrivenDesign.Repositories
 {
@@ -10,7 +10,7 @@ namespace Swart.DomainDrivenDesign.Repositories
     {
         IUnitOfWork UnitOfWork { get; }
 
-        IQuery<TEntity> List();
+        IQueryable<TEntity> List();
 
         TEntity Get(TKey id);
     }

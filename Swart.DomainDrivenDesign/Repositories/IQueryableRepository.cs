@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using Swart.DomainDrivenDesign.Domain;
 using Swart.DomainDrivenDesign.Domain.Specification;
-using Swart.DomainDrivenDesign.Query;
+using System.Linq;
 
 namespace Swart.DomainDrivenDesign.Repositories
 {
@@ -10,8 +10,8 @@ namespace Swart.DomainDrivenDesign.Repositories
         where TEntity : class, IEntity<TKey>
         where TKey : IComparable, IEquatable<TKey>
     {
-        IQuery<TEntity> List(Expression<Func<TEntity, bool>> expression);
-        IQuery<TEntity> List(ISpecification<TEntity> specification);
+        IQueryable<TEntity> List(Expression<Func<TEntity, bool>> expression);
+        IQueryable<TEntity> List(ISpecification<TEntity> specification);
 
         TEntity Single(Expression<Func<TEntity, bool>> expression);
         TEntity Single(ISpecification<TEntity> specification);

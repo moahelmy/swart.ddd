@@ -36,7 +36,6 @@ namespace Swart.DomainDrivenDesign.UnitTests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(ValidationException))]
         public void Add_InvalideEntity_ValidationExceptionThrown()
         {
             // Arrange            
@@ -45,8 +44,8 @@ namespace Swart.DomainDrivenDesign.UnitTests.Repositories
             entityMock.SetupProperty(x => x.Id);
             var entity = entityMock.Object;
 
-            // Act
-            _repository.Add(entity);
+            // Act && Assert
+            Assert.Throws<ValidationException>(() => _repository.Add(entity));
         }
 
         [TearDown]

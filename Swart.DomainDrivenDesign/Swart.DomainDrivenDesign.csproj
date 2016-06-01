@@ -30,10 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\EF\Swart.Repositories.EF\bin\Release\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,8 +43,6 @@
     <Compile Include="Domain\AbstractEntity.cs" />
     <Compile Include="Domain\Entity.cs" />
     <Compile Include="Domain\Exceptions\DomainException.cs" />
-    <Compile Include="Query\Query.cs" />
-    <Compile Include="Query\IQuery.cs" />
     <Compile Include="Domain\IEntity.cs" />
     <Compile Include="Domain\IValidatable.cs" />
     <Compile Include="Domain\Specification\DirectSpecification.cs" />
@@ -68,7 +64,7 @@
     <Compile Include="Repositories\RepositoryBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Linq\Swart.Linq\Swart.Linq.csproj">
+    <ProjectReference Include="..\..\swart.linq\Swart.Linq\Swart.Linq.csproj">
       <Project>{577E5294-E73F-45DE-AECE-1F96DA83B59D}</Project>
       <Name>Swart.Linq</Name>
     </ProjectReference>

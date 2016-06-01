@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Swart.DomainDrivenDesign.Domain;
 using Swart.DomainDrivenDesign.Domain.Specification;
-using Swart.DomainDrivenDesign.Query;
 using Swart.DomainDrivenDesign.Repositories.Exceptions;
 
 namespace Swart.DomainDrivenDesign.Repositories
@@ -18,9 +17,9 @@ namespace Swart.DomainDrivenDesign.Repositories
         #region Basic
         public virtual IUnitOfWork UnitOfWork { get; protected set; }       
 
-        public virtual IQuery<TEntity> List()
+        public virtual IQueryable<TEntity> List()
         {
-            return new Query<TEntity>(_List());
+            return _List();
         }
 
         public virtual TEntity Get(TKey id)
@@ -30,12 +29,12 @@ namespace Swart.DomainDrivenDesign.Repositories
         #endregion        
 
         #region Queryable
-        public virtual IQuery<TEntity> List(Expression<Func<TEntity, bool>> expression)
+        public virtual IQueryable<TEntity> List(Expression<Func<TEntity, bool>> expression)
         {
-            return new Query<TEntity>(_List().Where(expression));
+            return _List().Where(expression);
         }
 
-        public virtual IQuery<TEntity> List(ISpecification<TEntity> specification)
+        public virtual IQueryable<TEntity> List(ISpecification<TEntity> specification)
         {
             return List(specification.SatisfiedBy());
         }
