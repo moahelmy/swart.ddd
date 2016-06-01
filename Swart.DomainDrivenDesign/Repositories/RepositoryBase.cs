@@ -39,6 +39,11 @@ namespace Swart.DomainDrivenDesign.Repositories
             return List(specification.SatisfiedBy());
         }
 
+        public virtual IQueryable<TEntity> QueryableById(TKey id)
+        {
+            return List(x => x.Id.Equals(id));
+        }
+
         public virtual TEntity Single(Expression<Func<TEntity, bool>> expression)
         {
             return _List().FirstOrDefault(expression);
