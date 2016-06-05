@@ -10,12 +10,11 @@ namespace Swart.DomainDrivenDesign.Domain
     /// but it group information about address like street, city, country in one object.
     /// All value object must inherit from this class.
     /// </summary>    
-    public abstract class ValueObject<TValueObject> : IEquatable<TValueObject>, IValidatable
-        where TValueObject : ValueObject<TValueObject>
+    public abstract class ValueObject : IEquatable<ValueObject>, IValidatable        
     {
         // IEquatable and Override Equals operators
 
-        public bool Equals(TValueObject other)
+        public bool Equals(ValueObject other)
         {
             if ((object) other == null)
                 return false;
@@ -34,7 +33,7 @@ namespace Swart.DomainDrivenDesign.Domain
                         var right = p.GetValue(other, null);
 
 
-                        if (left is TValueObject)
+                        if (left is ValueObject)
                         {
                             //check not self-references...
                             return ReferenceEquals(left, right);
@@ -53,10 +52,10 @@ namespace Swart.DomainDrivenDesign.Domain
             if (ReferenceEquals(this, obj))
                 return true;
 
-            var item = obj as ValueObject<TValueObject>;
+            var item = obj as ValueObject;
 
             if ((object) item != null)
-                return Equals((TValueObject) item);
+                return Equals((ValueObject) item);
             return false;
         }
 
@@ -97,14 +96,14 @@ namespace Swart.DomainDrivenDesign.Domain
             return new List<ValidationResult>();
         }
 
-        public static bool operator ==(ValueObject<TValueObject> left, ValueObject<TValueObject> right)
+        public static bool operator ==(ValueObject left, ValueObject right)
         {
             if (Equals(left, null))
                 return (Equals(right, null));
             return left.Equals(right);
         }
 
-        public static bool operator !=(ValueObject<TValueObject> left, ValueObject<TValueObject> right)
+        public static bool operator !=(ValueObject left, ValueObject right)
         {
             return !(left == right);
         }

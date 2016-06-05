@@ -3,7 +3,7 @@
 namespace Swart.DomainDrivenDesign.UnitTests.Fakes
 {    
     class SelfReference
-        :ValueObject<SelfReference>
+        :ValueObject
     {
         public SelfReference()
         {

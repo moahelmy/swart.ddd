@@ -8,7 +8,7 @@ namespace Swart.DomainDrivenDesign.UnitTests.Fakes
     /// Sample value object
     /// </summary>
     public class Address
-        :ValueObject<Address>
+        :ValueObject
     {
         public string StreetLine1 { get; private set; }
         public string StreetLine2 { get; private set; }
