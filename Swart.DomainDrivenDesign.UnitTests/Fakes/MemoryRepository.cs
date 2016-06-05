@@ -36,10 +36,13 @@ namespace Swart.DomainDrivenDesign.UnitTests.Fakes
             _list.Remove(entity);
         }
 
-        protected override void UpdateEntity(IEntity<Guid> entity)
+        protected override IVoidResult UpdateEntity(IEntity<Guid> entity)
         {
             var index = _list.IndexOf(entity);
+            if (index == -1)
+                return new VoidResult().AddErrorMessage("Record not found");
             _list[index] = entity;
+            return new VoidResult();
         }
 
         public override void Dispose()

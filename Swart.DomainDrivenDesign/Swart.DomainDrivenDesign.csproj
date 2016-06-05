@@ -62,6 +62,12 @@
     <Compile Include="Repositories\ITransaction.cs" />
     <Compile Include="Repositories\IUnitOfWork.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
+    <Compile Include="Result\IResult.cs" />
+    <Compile Include="Result\ListResult.cs" />
+    <Compile Include="Result\Result.cs" />
+    <Compile Include="Result\ResultExtension.cs" />
+    <Compile Include="Result\SystemMessage.cs" />
+    <Compile Include="Result\VoidResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\swart.linq\Swart.Linq\Swart.Linq.csproj">

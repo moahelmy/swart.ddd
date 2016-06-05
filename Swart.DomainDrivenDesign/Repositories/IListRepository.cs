@@ -8,16 +8,16 @@ namespace Swart.DomainDrivenDesign.Repositories
         where TEntity : IEntity<TKey>
         where TKey : IComparable, IEquatable<TKey>
     {
-        void Add(TEntity item);
+        IVoidResult Add(TEntity item);
 
-        void Add(IEnumerable<TEntity> item);
+        IVoidResult Add(IEnumerable<TEntity> item);
 
-        void Delete(TEntity item);
+        IVoidResult Delete(TEntity item);
 
         void Delete(IEnumerable<TEntity> item);
 
-        TEntity Delete(TKey id);
+        IResult<TEntity> Delete(TKey id);
 
-        void Update(TEntity item);
+        IVoidResult Update(TEntity item);
     }
 }

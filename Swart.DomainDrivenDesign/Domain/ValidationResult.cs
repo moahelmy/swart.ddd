@@ -4,8 +4,6 @@ namespace Swart.DomainDrivenDesign.Domain
 {
     public class ValidationResult
     {
-        public static readonly ValidationResult Success;
-
         public ValidationResult(string errorMessage)
             :this(errorMessage, new List<string>())
         {            

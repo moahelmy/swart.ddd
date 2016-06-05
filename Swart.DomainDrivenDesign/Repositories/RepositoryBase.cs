@@ -60,30 +60,42 @@ namespace Swart.DomainDrivenDesign.Repositories
                 
         protected abstract void AddEntity(TEntity entity);
 
-        public virtual void Add(TEntity entity)
+        public virtual IVoidResult Add(TEntity entity)
         {
-            ValidateObject(entity);
-            AddEntity(entity);
+            if (entity == null)
+                return new VoidResult().AddErrorMessage("Entity cannot be null");
+            var result = ValidateObject(entity);
+            if(result.Succeed)
+                AddEntity(entity);
+            return result;
         }        
 
-        public virtual void Add(IEnumerable<TEntity> entities)
+        public virtual IVoidResult Add(IEnumerable<TEntity> entities)
         {
             var entitiesLst = entities as IList<TEntity> ?? entities.ToList();
+            var result = new VoidResult();
             foreach (var entity in entitiesLst)
             {
-                ValidateObject(entity);
+                var vResult = ValidateObject(entity);
+                if (!vResult.Succeed)
+                    result.AddMessages(vResult.Messages);
             }
-            foreach (var entity in entitiesLst)
-            {
-                Add(entity);
-            }
+            if(result.Succeed)
+                foreach (var entity in entitiesLst)
+                {
+                    Add(entity);
+                }
+            return result;
         }
 
         protected abstract void DeleteEntity(TEntity entity);
 
-        public virtual void Delete(TEntity entity)
+        public virtual IVoidResult Delete(TEntity entity)
         {
+            if (entity == null)
+                return new VoidResult().AddErrorMessage("Entity cannot be null");
             DeleteEntity(entity);
+            return new VoidResult();
         }
         
         public virtual void Delete(IEnumerable<TEntity> entities)
@@ -91,29 +103,31 @@ namespace Swart.DomainDrivenDesign.Repositories
             var entitiesLst = entities as IList<TEntity> ?? entities.ToList();
             foreach (var entity in entitiesLst)
             {
-                ValidateObject(entity);
-            }
-            foreach (var entity in entitiesLst)
-            {
                 Delete(entity);
             }
         }
         
-        public virtual TEntity Delete(TKey id)
+        public virtual IResult<TEntity> Delete(TKey id)
         {
             var entity = Get(id);
+            var result = new Result<TEntity>();
             if (entity == null)
-                throw new RecordNotFoundException();
+                result.AddErrorMessage("Record not found");
             Delete(entity);
-            return entity;
+            result.Return = entity;
+            return result;
         }
 
-        protected abstract void UpdateEntity(TEntity entity);
+        protected abstract IVoidResult UpdateEntity(TEntity entity);
 
-        public virtual void Update(TEntity entity)
+        public virtual IVoidResult Update(TEntity entity)
         {
-            ValidateObject(entity);
-            UpdateEntity(entity);
+            if (entity == null)
+                return new VoidResult().AddErrorMessage("Entity cannot be null");
+            var result = ValidateObject(entity);
+            if(result.Succeed)
+                return UpdateEntity(entity);
+            return result;
         }
         #endregion
 
@@ -122,11 +136,10 @@ namespace Swart.DomainDrivenDesign.Repositories
         #endregion       
 
         #region Private Methods
-        private static void ValidateObject(TEntity entity)
+        private static IVoidResult ValidateObject(TEntity entity)
         {
             var validationResults = entity.Validate().ToList();
-            if (validationResults.Any())
-                throw new ValidationException(validationResults);
+            return new VoidResult().AddErrorMessages(validationResults.Select(vr => vr.ErrorMessage).ToList());            
         }
         #endregion
     }

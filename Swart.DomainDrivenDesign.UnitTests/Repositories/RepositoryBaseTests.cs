@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using Swart.DomainDrivenDesign.Domain;
-using Swart.DomainDrivenDesign.Repositories.Exceptions;
 using Swart.DomainDrivenDesign.UnitTests.Fakes;
 
 namespace Swart.DomainDrivenDesign.UnitTests.Repositories
@@ -20,32 +19,141 @@ namespace Swart.DomainDrivenDesign.UnitTests.Repositories
         }
 
         [Test]
-        public void Add_ValideEntity_IdUpdated()
+        public void Add_Null_ReturnError()
         {
-            // Arrange            
-            var entityMock = new Mock<IEntity<Guid>>();
-            entityMock.Setup(x => x.Validate()).Returns(new List<ValidationResult>());
-            entityMock.SetupProperty(x => x.Id);
-            var entity = entityMock.Object; 
-
             // Act
-            _repository.Add(entity);
+            var result = _repository.Add((IEntity<Guid>) null);
 
             // Assert
-            Assert.AreNotEqual(Guid.Empty, entity.Id);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Succeed, Is.False);
         }
 
         [Test]
-        public void Add_InvalideEntity_ValidationExceptionThrown()
+        public void Add_ValideEntity_IdUpdated()
         {
             // Arrange            
-            var entityMock = new Mock<IEntity<Guid>>();
-            entityMock.Setup(x => x.Validate()).Returns(new List<ValidationResult> {new ValidationResult("any error")});
-            entityMock.SetupProperty(x => x.Id);
-            var entity = entityMock.Object;
+            var entity = _CreateValidEntity();
 
-            // Act && Assert
-            Assert.Throws<ValidationException>(() => _repository.Add(entity));
+            // Act
+            var result = _repository.Add(entity);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Succeed, Is.True);            
+            Assert.That(entity.Id, Is.Not.EqualTo(Guid.Empty));
+        }
+
+        [Test]
+        public void Add_InvalideEntity_ReturnErrors()
+        {
+            // Arrange                        
+            var entity = _CreateInvalidEntity();
+
+            // Act
+            var result = _repository.Add(entity);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Succeed, Is.False);            
+        }
+
+        [Test]
+        public void Add_ListWithInvalidEntity_NoAdd()
+        {
+            // Arranage
+            var entities = new List<IEntity<Guid>>
+            {
+                _CreateValidEntity(),
+                _CreateInvalidEntity()
+            };
+
+            // Act
+            var result = _repository.Add(entities);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Succeed, Is.False);
+        }
+
+        [Test]
+        public void Update_Null_ReturnError()
+        {
+            // Act
+            var result = _repository.Update((IEntity<Guid>)null);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Succeed, Is.False);
+        }
+
+
+        [Test]
+        public void Update_ValideEntity_Succeed()
+        {
+            // Arrange            
+            var entity = _CreateValidEntity();
+
+            // Act
+            _repository.Add(entity);
+            var result = _repository.Update(entity);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Succeed, Is.True);
+            Assert.That(entity.Id, Is.Not.EqualTo(Guid.Empty));
+        }
+
+        [Test]
+        public void Update_InvalideEntity_ReturnErrors()
+        {
+            // Arrange                        
+            var entityMock = _CreateValidEntityMock();
+
+            // Act
+            _repository.Add(entityMock.Object);
+            entityMock.Setup(x => x.Validate()).Returns(new List<ValidationResult> { new ValidationResult("any error") });
+            var result = _repository.Add(entityMock.Object);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Succeed, Is.False);
+        }
+
+        [Test]
+        public void Delete_Null_ReturnError()
+        {
+            // Act
+            var result = _repository.Delete((IEntity<Guid>)null);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Succeed, Is.False);
+        }
+
+
+        private Mock<IEntity<Guid>> _CreateValidEntityMock()
+        {
+            var entityMock = new Mock<IEntity<Guid>>();
+            entityMock.Setup(x => x.Validate()).Returns(new List<ValidationResult>());
+            entityMock.SetupProperty(x => x.Id);
+            return entityMock;
+        }
+
+        private IEntity<Guid> _CreateValidEntity()
+        {
+            var entityMock = new Mock<IEntity<Guid>>();
+            entityMock.Setup(x => x.Validate()).Returns(new List<ValidationResult>());
+            entityMock.SetupProperty(x => x.Id);
+            return entityMock.Object;
+        }
+
+        private IEntity<Guid> _CreateInvalidEntity()
+        {
+            var entityMock = new Mock<IEntity<Guid>>();
+            entityMock.Setup(x => x.Validate()).Returns(new List<ValidationResult> { new ValidationResult("any error") });
+            entityMock.SetupProperty(x => x.Id);
+            return entityMock.Object;
         }
 
         [TearDown]
