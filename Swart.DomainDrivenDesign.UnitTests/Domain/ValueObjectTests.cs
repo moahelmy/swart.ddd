@@ -4,6 +4,7 @@ using Swart.DomainDrivenDesign.UnitTests.Fakes;
 namespace Swart.DomainDrivenDesign.UnitTests.Domain
 {
     [TestFixture]
+    [Category("Unit Test")]
     public class ValueObjectTests
     {
         #region SameValueObject

@@ -12,6 +12,6 @@ namespace Swart.DomainDrivenDesign.Repositories
 
         IQueryable<TEntity> List();
 
-        TEntity Get(TKey id);
+        IResult<TEntity> Get(TKey id);
     }
 }

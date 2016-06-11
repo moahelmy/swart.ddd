@@ -8,6 +8,7 @@ using Swart.DomainDrivenDesign.UnitTests.Fakes;
 namespace Swart.DomainDrivenDesign.UnitTests.Repositories
 {
     [TestFixture]
+    [Category("Unit Test")]
     public class RepositoryBaseTests
     {
         private MemoryRepository _repository;
@@ -131,6 +132,33 @@ namespace Swart.DomainDrivenDesign.UnitTests.Repositories
             Assert.That(result.Succeed, Is.False);
         }
 
+        [Test]
+        public void Get_IdNotFound_ErrorReturned()
+        {
+            // Arrange            
+
+            // Act
+            var result = _repository.Get(Guid.NewGuid());
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Succeed, Is.False);            
+        }
+
+        [Test]
+        public void Get_IdFound_EntityReturned()
+        {
+            // Arrange
+            var entity = _CreateValidEntity();
+            _repository.Add(entity);
+
+            // Act
+            var result = _repository.Get(entity.Id);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Succeed, Is.True);
+        }        
 
         private Mock<IEntity<Guid>> _CreateValidEntityMock()
         {

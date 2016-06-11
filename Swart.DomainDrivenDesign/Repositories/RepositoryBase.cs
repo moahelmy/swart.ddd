@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Swart.DomainDrivenDesign.Domain;
 using Swart.DomainDrivenDesign.Domain.Specification;
-using Swart.DomainDrivenDesign.Repositories.Exceptions;
 
 namespace Swart.DomainDrivenDesign.Repositories
 {
@@ -22,9 +21,12 @@ namespace Swart.DomainDrivenDesign.Repositories
             return _List();
         }
 
-        public virtual TEntity Get(TKey id)
+        public virtual IResult<TEntity> Get(TKey id)
         {
-            return _List().FirstOrDefault(e => e.Id.Equals(id));
+            var entity = _List().FirstOrDefault(e => e.Id.Equals(id));
+            if (entity == null)
+                return new Result<TEntity>().AddErrorMessage("Record not found");
+            return new Result<TEntity> { Return = entity };
         }
         #endregion        
 
@@ -109,12 +111,10 @@ namespace Swart.DomainDrivenDesign.Repositories
         
         public virtual IResult<TEntity> Delete(TKey id)
         {
-            var entity = Get(id);
-            var result = new Result<TEntity>();
-            if (entity == null)
-                result.AddErrorMessage("Record not found");
-            Delete(entity);
-            result.Return = entity;
+            var result = Get(id);
+            if (!result.Succeed)
+                return result;
+            Delete(result.Return);            
             return result;
         }
 
